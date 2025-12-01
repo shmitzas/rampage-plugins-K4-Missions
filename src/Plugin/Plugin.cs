@@ -17,7 +17,7 @@ using SwiftlyS2.Shared.Translation;
 
 namespace K4Missions;
 
-[PluginMetadata(Id = "k4.missions", Version = "1.0.2", Name = "K4 - Missions", Author = "K4ryuu", Description = "A dynamic mission system for Counter-Strike 2 using SwiftlyS2 framework.")]
+[PluginMetadata(Id = "k4.missions", Version = "1.0.3", Name = "K4 - Missions", Author = "K4ryuu", Description = "A dynamic mission system for Counter-Strike 2 using SwiftlyS2 framework.")]
 public sealed partial class Plugin(ISwiftlyCore core) : BasePlugin(core)
 {
 	/// <summary>Static Core reference for nested classes</summary>

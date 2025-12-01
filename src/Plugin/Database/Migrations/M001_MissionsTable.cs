@@ -6,7 +6,7 @@ namespace K4Missions.Database.Migrations;
 /// Initial migration for K4 Missions
 /// Creates k4_missions table
 /// </summary>
-[Migration(20251201001)]
+[Migration(202512010249)]
 public class M001_MissionsTable : Migration
 {
 	public override void Up()
