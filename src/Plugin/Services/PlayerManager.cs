@@ -115,7 +115,10 @@ public sealed partial class Plugin
 						RewardCommands = dbMission.GetRewardCommandsList(),
 						Progress = dbMission.Progress,
 						IsCompleted = dbMission.Completed,
-						ExpiresAt = dbMission.ExpiresAt
+						ExpiresAt = dbMission.ExpiresAt,
+						EventProperties = dbMission.GetEventProperties(),
+						MapName = dbMission.MapName,
+						Flag = dbMission.Flag
 					});
 				}
 

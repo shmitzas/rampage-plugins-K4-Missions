@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
 
 namespace K4Missions;
 
@@ -43,11 +44,49 @@ public sealed class DbMission
 	[Column("expires_at")]
 	public DateTime? ExpiresAt { get; set; }
 
+	[Column("event_properties")]
+	public string? EventPropertiesJson { get; set; }
+
+	[Column("map_name")]
+	public string? MapName { get; set; }
+
+	[Column("flag")]
+	public string? Flag { get; set; }
+
 	/// <summary>
 	/// Parse reward commands from pipe-separated string
 	/// </summary>
 	public List<string> GetRewardCommandsList() =>
 		RewardCommands.Split('|', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+	/// <summary>
+	/// Parse event properties from JSON string
+	/// </summary>
+	public Dictionary<string, JsonElement>? GetEventProperties()
+	{
+		if (string.IsNullOrEmpty(EventPropertiesJson))
+			return null;
+
+		try
+		{
+			return JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(EventPropertiesJson);
+		}
+		catch
+		{
+			return null;
+		}
+	}
+
+	/// <summary>
+	/// Serialize event properties to JSON string
+	/// </summary>
+	public static string? SerializeEventProperties(Dictionary<string, JsonElement>? eventProperties)
+	{
+		if (eventProperties == null || eventProperties.Count == 0)
+			return null;
+
+		return JsonSerializer.Serialize(eventProperties);
+	}
 
 	/// <summary>
 	/// Create a DbMission from a PlayerMission
@@ -63,6 +102,9 @@ public sealed class DbMission
 		RewardCommands = string.Join("|", mission.RewardCommands),
 		Progress = mission.Progress,
 		Completed = mission.IsCompleted,
-		ExpiresAt = expiresAt
+		ExpiresAt = expiresAt,
+		EventPropertiesJson = SerializeEventProperties(mission.EventProperties),
+		MapName = mission.MapName,
+		Flag = mission.Flag
 	};
 }

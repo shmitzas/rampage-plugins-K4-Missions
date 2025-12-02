@@ -5,7 +5,9 @@
     "Amount": 10,
     "RewardCommands": ["sw_givecredits {steamid64} 30"],
     "RewardPhrase": "30 Credits",
-    "Phrase": "Kill 10 players (NORMAL)"
+    "Phrase": "[SUPERVIP] Kill 10 players on de_dust2 (NORMAL)",
+    "Flag": "vipcore.supervip",
+    "MapName": "de_dust2"
   },
   {
     "Event": "EventPlayerDeath",

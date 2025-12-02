@@ -149,16 +149,112 @@ I create free, open-source projects for the community. While not required, donat
 
 ### Available Events
 
-| Event                 | Target                 | Description          |
-| --------------------- | ---------------------- | -------------------- |
-| `EventPlayerDeath`    | `Attacker`, `Assister` | Player kills/assists |
-| `EventRoundMvp`       | `Userid`               | MVP awards           |
-| `EventBombPlanted`    | `Userid`               | Bomb plants          |
-| `EventBombDefused`    | `Userid`               | Bomb defuses         |
-| `EventHostageRescued` | `Userid`               | Hostage rescues      |
-| `EventGrenadeThrown`  | `Userid`               | Grenade throws       |
-| `EventRoundEnd`       | `winner`, `loser`      | Round wins/losses    |
-| `PlayTime`            | `Userid`               | Minutes played       |
+The plugin supports **all CS2 game events** dynamically. You can use any event from the [CS2 Game Events List](https://cs2.poggu.me/dumped-data/game-events/).
+
+**Common events for missions:**
+
+| Event                 | Target                 | Description                                 |
+| --------------------- | ---------------------- | ------------------------------------------- |
+| `EventPlayerDeath`    | `Attacker`, `Assister` | Player kills/assists                        |
+| `EventRoundMvp`       | `Userid`               | MVP awards                                  |
+| `EventBombPlanted`    | `Userid`               | Bomb plants                                 |
+| `EventBombDefused`    | `Userid`               | Bomb defuses                                |
+| `EventHostageRescued` | `Userid`               | Hostage rescues                             |
+| `EventGrenadeThrown`  | `Userid`               | Grenade throws                              |
+| `EventRoundEnd`       | `winner`, `loser`      | Round wins/losses                           |
+| `PlayTime`            | `Userid`               | Minutes played (internal, not a game event) |
+
+> **Note:** Event names must use PascalCase with `Event` prefix (e.g., `player_death` → `EventPlayerDeath`). The `Target` field should match a player-related property from the event (check the event documentation for available fields).
+
+### Event Properties (EventProperties)
+
+Event properties allow filtering missions to specific conditions. The plugin dynamically reads all properties from game events.
+
+> **💡 Tip:** Enable `EventDebugLogs: true` in config.json to see all available properties and their values in the server console when events fire. This makes it easy to discover which properties you can filter on.
+
+#### Common EventPlayerDeath Properties
+
+| Property        | Type    | Description                              | Example Value                |
+| --------------- | ------- | ---------------------------------------- | ---------------------------- |
+| `Weapon`        | string  | Weapon name used for the kill            | `"ak47"`, `"awp"`, `"knife"` |
+| `Headshot`      | boolean | Whether it was a headshot                | `true`, `false`              |
+| `Penetrated`    | number  | Number of surfaces penetrated (wallbang) | `0`, `1`, `2`                |
+| `Noscope`       | boolean | Whether it was a noscope kill            | `true`, `false`              |
+| `Thrusmoke`     | boolean | Whether killed through smoke             | `true`, `false`              |
+| `Attackerblind` | boolean | Whether attacker was flashed             | `true`, `false`              |
+| `Distance`      | number  | Distance between attacker and victim     | `500.0`                      |
+
+#### Property Matching Logic
+
+- **String properties**: Uses case-insensitive contains matching (e.g., `"ak"` matches `"ak47"`)
+- **Boolean properties**: Must match exactly (`true` or `false`)
+- **Number properties**: Event value must be >= mission value (useful for minimum distance, penetration count)
+
+#### EventProperties Examples
+
+```json
+{
+  "Event": "EventPlayerDeath",
+  "EventProperties": {
+    "Weapon": "ak47",
+    "Headshot": true
+  },
+  "Target": "Attacker",
+  "Amount": 10,
+  "Phrase": "Get 10 AK-47 headshot kills"
+}
+```
+
+```json
+{
+  "Event": "EventPlayerDeath",
+  "EventProperties": {
+    "Weapon": "awp",
+    "Noscope": true
+  },
+  "Target": "Attacker",
+  "Amount": 5,
+  "Phrase": "Get 5 AWP noscope kills"
+}
+```
+
+```json
+{
+  "Event": "EventPlayerDeath",
+  "EventProperties": {
+    "Penetrated": 1
+  },
+  "Target": "Attacker",
+  "Amount": 3,
+  "Phrase": "Get 3 wallbang kills"
+}
+```
+
+```json
+{
+  "Event": "EventPlayerDeath",
+  "EventProperties": {
+    "Thrusmoke": true
+  },
+  "Target": "Attacker",
+  "Amount": 5,
+  "Phrase": "Kill 5 enemies through smoke"
+}
+```
+
+### Mission Definition Fields
+
+| Field             | Type     | Required | Description                                      |
+| ----------------- | -------- | -------- | ------------------------------------------------ |
+| `Event`           | string   | Yes      | Game event type to track                         |
+| `Target`          | string   | Yes      | Event field identifying the player               |
+| `Amount`          | number   | Yes      | Required count to complete mission               |
+| `Phrase`          | string   | Yes      | Mission description shown to players             |
+| `RewardCommands`  | string[] | Yes      | Commands executed on completion                  |
+| `RewardPhrase`    | string   | Yes      | Reward description shown to players              |
+| `EventProperties` | object   | No       | Filter conditions for the event                  |
+| `MapName`         | string   | No       | Restrict mission to specific map                 |
+| `Flag`            | string   | No       | Permission flag required to receive this mission |
 
 ### Reset Modes
 

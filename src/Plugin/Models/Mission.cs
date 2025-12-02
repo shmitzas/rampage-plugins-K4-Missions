@@ -139,30 +139,69 @@ public sealed class PlayerMission
 	{
 		return missionValue.ValueKind switch
 		{
+			// Boolean comparison - exact match required
 			JsonValueKind.True or JsonValueKind.False =>
 				eventValue is bool eventBool && missionValue.GetBoolean() == eventBool,
 
-			JsonValueKind.Number when missionValue.TryGetInt32(out var missionInt) =>
-				eventValue switch
-				{
-					int eventInt => eventInt >= missionInt,
-					byte eventByte => eventByte >= missionInt,
-					_ => false
-				},
+			// Integer comparison - event value must be >= mission value
+			// Supports all integer primitives: byte, sbyte, short, ushort, int, uint, long, ulong
+			JsonValueKind.Number when missionValue.TryGetInt64(out var missionLong) =>
+				CompareNumericValue(eventValue, missionLong),
 
+			// Floating point comparison - event value must be >= mission value
+			// Supports: float, double, decimal
 			JsonValueKind.Number when missionValue.TryGetDouble(out var missionDouble) =>
-				eventValue switch
-				{
-					double eventDouble => eventDouble >= missionDouble,
-					float eventFloat => eventFloat >= missionDouble,
-					int eventInt => eventInt >= missionDouble,
-					_ => false
-				},
+				CompareFloatingPointValue(eventValue, missionDouble),
 
+			// String comparison - case-insensitive contains match
 			JsonValueKind.String when missionValue.GetString() is { } missionString =>
 				eventValue is string eventString &&
 				eventString.Contains(missionString, StringComparison.OrdinalIgnoreCase),
 
+			_ => false
+		};
+	}
+
+	/// <summary>
+	/// Compare integer-based numeric values (supports all integer primitives)
+	/// </summary>
+	private static bool CompareNumericValue(object eventValue, long missionValue)
+	{
+		return eventValue switch
+		{
+			byte v => v >= missionValue,
+			sbyte v => v >= missionValue,
+			short v => v >= missionValue,
+			ushort v => v >= missionValue,
+			int v => v >= missionValue,
+			uint v => v >= missionValue,
+			long v => v >= missionValue,
+			ulong v => v >= (ulong)missionValue,
+			float v => v >= missionValue,
+			double v => v >= missionValue,
+			decimal v => v >= missionValue,
+			_ => false
+		};
+	}
+
+	/// <summary>
+	/// Compare floating point values (supports float, double, decimal)
+	/// </summary>
+	private static bool CompareFloatingPointValue(object eventValue, double missionValue)
+	{
+		return eventValue switch
+		{
+			float v => v >= missionValue,
+			double v => v >= missionValue,
+			decimal v => (double)v >= missionValue,
+			byte v => v >= missionValue,
+			sbyte v => v >= missionValue,
+			short v => v >= missionValue,
+			ushort v => v >= missionValue,
+			int v => v >= missionValue,
+			uint v => v >= missionValue,
+			long v => v >= missionValue,
+			ulong v => v >= missionValue,
 			_ => false
 		};
 	}
