@@ -9,15 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **EventProperties persistence**: EventProperties, MapName, and Flag are now properly saved to and loaded from database
+- **EventProperties persistence**: EventProperties and MapName are now properly saved to and loaded from database
 - **Extended primitive support**: EventProperties now supports all primitive types (bool, string, byte, sbyte, short, ushort, int, uint, long, ulong, float, double, decimal)
-- **New database columns**: Added `event_properties`, `map_name`, and `flag` columns via M002 migration
+- **New database columns**: Added `event_properties` and `map_name` columns via M002 migration
 
 ### Fixed
 
 - Fixed EventProperties not being persisted to database (missions with filters like weapon/headshot now work correctly after server restart)
 - Fixed MapName restriction not being loaded from database
-- Fixed Flag permission not being loaded from database
 
 ## [v1.0.3]
 

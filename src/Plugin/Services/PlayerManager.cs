@@ -117,8 +117,7 @@ public sealed partial class Plugin
 						IsCompleted = dbMission.Completed,
 						ExpiresAt = dbMission.ExpiresAt,
 						EventProperties = dbMission.GetEventProperties(),
-						MapName = dbMission.MapName,
-						Flag = dbMission.Flag
+						MapName = dbMission.MapName
 					});
 				}
 

@@ -50,9 +50,6 @@ public sealed class DbMission
 	[Column("map_name")]
 	public string? MapName { get; set; }
 
-	[Column("flag")]
-	public string? Flag { get; set; }
-
 	/// <summary>
 	/// Parse reward commands from pipe-separated string
 	/// </summary>
@@ -104,7 +101,6 @@ public sealed class DbMission
 		Completed = mission.IsCompleted,
 		ExpiresAt = expiresAt,
 		EventPropertiesJson = SerializeEventProperties(mission.EventProperties),
-		MapName = mission.MapName,
-		Flag = mission.Flag
+		MapName = mission.MapName
 	};
 }

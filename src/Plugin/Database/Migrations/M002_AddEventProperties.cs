@@ -27,13 +27,6 @@ public class M002_AddEventProperties : Migration
 			Alter.Table("k4_missions")
 				.AddColumn("map_name").AsString(64).Nullable();
 		}
-
-		// Add flag column (permission flag required)
-		if (!Schema.Table("k4_missions").Column("flag").Exists())
-		{
-			Alter.Table("k4_missions")
-				.AddColumn("flag").AsString(128).Nullable();
-		}
 	}
 
 	public override void Down()
@@ -46,8 +39,5 @@ public class M002_AddEventProperties : Migration
 
 		if (Schema.Table("k4_missions").Column("map_name").Exists())
 			Delete.Column("map_name").FromTable("k4_missions");
-
-		if (Schema.Table("k4_missions").Column("flag").Exists())
-			Delete.Column("flag").FromTable("k4_missions");
 	}
 }
