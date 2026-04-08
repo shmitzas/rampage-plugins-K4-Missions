@@ -1,0 +1,27 @@
+{
+  // Bendra
+  "k4.general.prefix": "[ [darkred]Rampage.lt [default]]",
+
+  // Misijų pranešimai
+  "k4.missions.new_mission": "Turi [lime]{0} [default]naujų misijų! Naudok [gold]!{1} [default]kad peržiūrėtum.",
+  "k4.missions.complete_mission": "Užbaigei [lime]{0} [default]misiją ir gavai [red]{1}",
+  "k4.missions.no_missions": "Nėra prieinamų misijų",
+  "k4.missions.dailyreset": "Nauja diena, nauji iššūkiai! [lime]Visos misijos buvo atstatytos!",
+
+  // Meniu
+  "k4.missions.menu.title": "Misijos",
+  "k4.missions.menu.mission": "Misija #{0}",
+  "k4.missions.menu.playerlimit": "Reikia {0} žaidėjų norint progresuoti",
+  "k4.missions.menu.vip_locked": "Tik VIP",
+  "k4.missions.menu.reset.map": "Atsinaujina pasikeitus mapui",
+  "k4.missions.menu.reset.instant": "Nauja misija užbaigus",
+  "k4.missions.menu.reset.time": "Atsinaujina už {0}h {1}m",
+  "k4.missions.menu.reset.days": "Atsinaujina už {0}d {1}h {2}m",
+
+  // Čato detalės
+  "k4.missions.detail.header": "[gold]▬▬▬ [default]Misija #{0} [gold]▬▬▬",
+  "k4.missions.detail.task": "Užduotis: [white]{0}",
+  "k4.missions.detail.progress": "Progresas: [gold]{0}[default]/[lime]{1}",
+  "k4.missions.detail.completed": "[lime]✓ Atlikta!",
+  "k4.missions.detail.reward": "Atlygis: [blue]{0}"
+}
